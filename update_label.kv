@@ -1,0 +1,29 @@
+<MyLayout>
+    BoxLayout:
+        orientation: "vertical"
+        size: root.width, root.height
+    
+        Label:
+            text: "Введите Логин"
+            font_size: 20
+    
+        TextInput:
+            id: login_value
+            multiline: False
+            size_hint: (1,.5)
+    
+        Label:
+            text: "Введите Пароль"
+            font_size: 20
+    
+        TextInput:
+            id: password_value
+            multiline: False
+            size_hint: (1,.5)
+            password: True
+    
+        Button:
+            size_hint: (1,.5)
+            font_size: 32
+            text: "Submit"
+            on_press: root.press()

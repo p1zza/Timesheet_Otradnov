@@ -5,6 +5,9 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 
+from Forms.LaborantScreen import LaborantScreen
+from Forms.AdministratorScreen import AdministratorScreen
+
 class ScreenMain(Screen):
     login = ""
     password = ""
@@ -64,63 +67,6 @@ class ErrorScreen(Screen):
         self.add_widget(boxlayout)
 
     def errorbutton_onclick(self, *args):
-        self.manager.transition.direction = 'right'
-        self.manager.current = 'LOGIN_screen'
-
-class LaborantScreen(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-        boxlayout = BoxLayout(orientation="vertical", spacing=5, padding=[10])
-        errorbutton = Button(
-            text="Экран лаборанта",
-            background_color=[2, 1.5, 3, 1],
-            size_hint=[1, 0.1],
-            on_press=self.errorbutton_onclick,
-        )
-
-        boxlayout.add_widget(errorbutton)
-        self.add_widget(boxlayout)
-
-    def errorbutton_onclick(self, *args):
-        self.manager.transition.direction = 'left'
-        self.manager.current = 'LOGIN_screen'
-
-class AdministratorScreen(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-        boxlayout = BoxLayout(orientation="vertical", spacing=5, padding=[10])
-        button_new_pasword1 = Button(
-            text="Return",
-            background_color=[2, 1.5, 3, 1],
-            size_hint=[1, 0.1],
-            on_press=self.BUTTON_return,
-        )
-
-        boxlayout1 = BoxLayout(orientation="horizontal", spacing=5, padding=[10])
-        button_new_pasword2 = Button(
-            text="button horizontal",
-            background_color=[2, 1.5, 3, 1],
-            size_hint=[1, 0.1],
-            on_press=self.BUTTON_return,
-        )
-        button_new_pasword3 = Button(
-            text="button horizontal",
-            background_color=[2, 1.5, 3, 1],
-            size_hint=[1, 0.1],
-            on_press=self.BUTTON_return,
-        )
-
-        boxlayout.add_widget(button_new_pasword1)
-        self.add_widget(boxlayout)
-
-
-        boxlayout1.add_widget(button_new_pasword2)
-        boxlayout1.add_widget(button_new_pasword3)
-        self.add_widget(boxlayout1)
-
-    def BUTTON_return(self, *args):
         self.manager.transition.direction = 'right'
         self.manager.current = 'LOGIN_screen'
 

@@ -8,6 +8,7 @@ from kivy.uix.textinput import TextInput
 from Forms.LaborantScreen import LaborantScreen
 from Forms.AdministratorScreen import AdministratorScreen
 from Forms.ImportScreen import ImportScreen
+from Forms.UsersScreen import UsersScreen
 
 class ScreenMain(Screen):
     login = ""
@@ -79,6 +80,7 @@ class PaswordingApp(App):
         sm.add_widget(ErrorScreen(name='errorscreen'))
         sm.add_widget(LaborantScreen(name='laborantscreen'))
         sm.add_widget(ImportScreen(name='IMPORT_screen'))
+        sm.add_widget(UsersScreen(name='USERS_screen'))
         return sm
 
 if __name__ == "__main__":

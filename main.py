@@ -10,16 +10,22 @@ from Forms.AdministratorScreen import AdministratorScreen
 from Forms.ImportScreen import ImportScreen
 from Forms.UsersScreen import UsersScreen
 
+from sqlite import Database
+
+
 class ScreenMain(Screen):
     login = ""
     password = ""
-    def __init__ (self,**kwargs):
+
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        self.db = Database()  # TODO: Поймать sqlite3.Error и обработать
 
         boxlayout = BoxLayout(orientation="vertical", spacing=5, padding=[10])
 
-        login_label = Label(text = "Введите Логин", font_size = 20)
-        self.login_value = TextInput(multiline= False, size_hint= (1,.5))
+        login_label = Label(text="Введите Логин", font_size=20)
+        self.login_value = TextInput(multiline=False, size_hint=(1, .5))
         password_label = Label(text="Введите Пароль", font_size=20)
         self.password_value = TextInput(multiline=False, size_hint=(1, .5), password=True)
 
@@ -39,20 +45,18 @@ class ScreenMain(Screen):
         self.add_widget(boxlayout)
 
     def BUTTON_login(self, *args):
-#TODO тут проверка роли пользователя
-        self.login = self.login_value.text
-        self.password = self.password_value.text
-        print(self.login, self.password)
+        auth_role = self.db.authenticate(self.login_value.text, self.password_value.text)
 
-        if self.login == "administrator":
-            self.manager.transition.direction = 'left'
-            self.manager.current = 'adminscreen'
-        elif self.login == "laborant":
-            self.manager.transition.direction = 'left'
-            self.manager.current = 'laborantscreen'
-        else:
+        if auth_role is None:
             self.manager.transition.direction = 'right'
             self.manager.current = 'errorscreen'
+        elif auth_role == "admin":
+            self.manager.transition.direction = 'left'
+            self.manager.current = 'adminscreen'
+        elif auth_role == "laborant":
+            self.manager.transition.direction = 'left'
+            self.manager.current = 'laborantscreen'
+
 
 class ErrorScreen(Screen):
     def __init__(self, **kwargs):
@@ -72,6 +76,7 @@ class ErrorScreen(Screen):
         self.manager.transition.direction = 'right'
         self.manager.current = 'LOGIN_screen'
 
+
 class PaswordingApp(App):
     def build(self):
         sm = ScreenManager()
@@ -82,6 +87,7 @@ class PaswordingApp(App):
         sm.add_widget(ImportScreen(name='IMPORT_screen'))
         sm.add_widget(UsersScreen(name='USERS_screen'))
         return sm
+
 
 if __name__ == "__main__":
     PaswordingApp().run()

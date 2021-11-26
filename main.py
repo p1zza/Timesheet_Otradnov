@@ -9,6 +9,7 @@ from Forms.LaborantScreen import LaborantScreen
 from Forms.AdministratorScreen import AdministratorScreen
 from Forms.ImportScreen import ImportScreen
 from Forms.UsersScreen import UsersScreen
+from Forms.EditDataScreen import EditDataScreen
 
 class ScreenMain(Screen):
     login = ""
@@ -81,6 +82,7 @@ class PaswordingApp(App):
         sm.add_widget(LaborantScreen(name='laborantscreen'))
         sm.add_widget(ImportScreen(name='IMPORT_screen'))
         sm.add_widget(UsersScreen(name='USERS_screen'))
+        sm.add_widget(EditDataScreen(name='EditData_screen'))
         return sm
 
 if __name__ == "__main__":

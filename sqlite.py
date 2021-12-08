@@ -2,6 +2,8 @@ import sqlite3
 import os
 from hashlib import sha256
 
+import data_models
+
 
 class Database:
     _DATABASE_NAME = "timesheet.db"
@@ -41,6 +43,8 @@ class Database:
         )''')
         self.main_cursor.execute(f"INSERT INTO user_data(login, password, role) VALUES('admin', "
                                  f"'{sha256('admin'.encode('utf-8')).hexdigest()}', 'admin')")
+        self.main_cursor.execute(f"INSERT INTO user_data(login, password, role) VALUES('laborant', "
+                                 f"'{sha256('laborant'.encode('utf-8')).hexdigest()}', 'laborant')")
         self._connection.commit()
 
     def authenticate(self, login, password):
@@ -50,3 +54,36 @@ class Database:
         if not result:
             return None
         return result[0]
+
+# TODO: Подгрузки данных
+    def load_rooms(self):
+        rooms = []
+        result = self.main_cursor.execute("SELECT rooms.id, campus, number, room_types.name FROM rooms "
+                                          "LEFT JOIN room_types ON rooms.id = room_types.id")
+        for row in result:
+            rooms.append(data_models.Room(result[0], result[1], result[2], result[3]))
+        return rooms
+
+    def add_room(self, room):
+        result = self.main_cursor.execute("SELECT id FROM room_types WHERE name = ?", room.type)
+        result = result.fetchone()
+        if len(result) != 1:
+            raise sqlite3.Error("Внутренняя ошибка базы данных")
+        self.main_cursor.execute(f"INSERT INTO rooms(id, campus, number, type) VALUES(?, ?, ?, ?)",
+                                 room.id, room.campus, room.number, room.type)
+        self._connection.commit()
+
+    def load_personals(self):
+        personals = []
+        result = self.main_cursor.execute("SELECT  id, name, surname, patronymic, email, phone, photo "
+                                          "FROM personal_data")
+        for row in result:
+            personals.append(data_models.Room(result[0], result[1], result[2], result[3],
+                                              result[4], result[5], result[6]))
+        return personals
+
+    def add_personal(self, personal_data):
+        self.main_cursor.execute(f"INSERT INTO personal_data(name, surname, patronymic, email, phone, photo) VALUES(?, ?, ?, ?)",
+                                 personal_data.name, personal_data.surname, personal_data.patronymic,
+                                 personal_data.email, personal_data.phone, personal_data.photo)
+        self._connection.commit()

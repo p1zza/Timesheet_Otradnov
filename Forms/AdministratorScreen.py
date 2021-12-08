@@ -14,7 +14,7 @@ class AdministratorScreen(Screen):
 
         layout = GridLayout(cols=5, row_force_default=True, row_default_height=40)
         layout.add_widget(Button(text='Импорт расписания',on_press=self.BUTTON_ImportTimesheet))
-        layout.add_widget(Button(text='Редактирование'))
+        layout.add_widget(Button(text='Редактирование',on_press=self.BUTTON_EditData))
         layout.add_widget(Button(text='Уведомления'))
         layout.add_widget(Button(text='Пользователи',on_press = self.BUTTON_users))
         layout.add_widget(Button(text='Расписание дежурств'))
@@ -49,6 +49,7 @@ class AdministratorScreen(Screen):
         self.manager.current = 'USERS_screen'
 
     def BUTTON_ImportTimesheet(self,*args):
+        # TODO: обработка ексель-файла
         self.manager.transition.direction = 'left'
         self.manager.current = 'IMPORT_screen'
 
@@ -59,6 +60,11 @@ class AdministratorScreen(Screen):
 
     def BUTTON_removeStatus(self,*args):
         self.remove_widget(self.butt)
+
+    def BUTTON_EditData(self,*args):
+        # TODO: изменение данных в бд. Форма редактирования
+        self.manager.transition.direction = 'left'
+        self.manager.current = 'EditData_screen'
 
     def BUTTON_return(self, *args):
         self.manager.transition.direction = 'right'

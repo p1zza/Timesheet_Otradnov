@@ -28,9 +28,8 @@ class UsersScreen(Screen):
         boxlayout.add_widget(layout)
         boxlayout.add_widget(label)
         boxlayout.add_widget(returnButton)
-
-
-
+        self.add_widget(boxlayout)
+        '''
         dropdown = DropDown()
         for index in range(10):
             # When adding widgets, we need to specify the height manually
@@ -62,7 +61,8 @@ class UsersScreen(Screen):
 
         runTouchApp(mainbutton)
         boxlayout.add_widget(dropdown)
-        self.add_widget(boxlayout)
+        '''
+
 
     def BUTTON_return(self, *args):
         self.manager.transition.direction = 'right'

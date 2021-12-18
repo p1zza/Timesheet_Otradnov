@@ -18,10 +18,10 @@ class AdministratorScreen(Screen):
         layout.add_widget(Button(text='Уведомления'))
         layout.add_widget(Button(text='Пользователи',on_press = self.BUTTON_users))
         layout.add_widget(Button(text='Расписание дежурств'))
+        layout.add_widget(Button(text='Статус', on_press=self.BUTTON_status))
         layout.add_widget(Button(text='Изменение расписания'))
         layout.add_widget(Button(text='Перенести пару'))
         layout.add_widget(Button(text='Заменить преподавателя'))
-        layout.add_widget(Button(text='Статус',on_press = self.BUTTON_status))
         layout.add_widget(Button(text='Назад',on_press = self.BUTTON_return))
 
 

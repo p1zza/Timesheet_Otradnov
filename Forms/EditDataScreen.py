@@ -4,8 +4,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
-from kivy.base import runTouchApp
-
 
 class EditDataScreen(Screen):
     def __init__(self, **kwargs):

@@ -13,7 +13,7 @@ class ImportScreen(Screen):
 
         layout = BoxLayout(orientation="vertical", spacing=5, padding=[10])
         returnButton = Button(
-            text="Return",
+            text="В меню",
             background_color=[2, 1.5, 3, 1],
             size_hint=[1, 0.1],
             on_press=self.BUTTON_return

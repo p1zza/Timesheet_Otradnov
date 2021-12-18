@@ -6,12 +6,11 @@ import data_models
 
 
 class Database:
-    _DATABASE_NAME = "timesheet.db"
-
-    def __init__(self):
+    def __init__(self, db_path="timesheet.db"):
         self._connection = None
         self.main_cursor = None
-        is_present = os.path.isfile(self._DATABASE_NAME)
+        self._database_path = db_path
+        is_present = os.path.isfile(self._database_path)
         self.connect()
         if not is_present:
             self._create_schema()
@@ -20,7 +19,7 @@ class Database:
 
     def connect(self):
         try:
-            self._connection = sqlite3.connect(self._DATABASE_NAME)
+            self._connection = sqlite3.connect(self._database_path)
             self.main_cursor = self._connection.cursor()
         except sqlite3.Error as err:
             self.disconnect()

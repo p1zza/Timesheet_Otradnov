@@ -15,32 +15,18 @@ class AdministratorScreen(Screen):
         layout = GridLayout(cols=5, row_force_default=True, row_default_height=40)
         layout.add_widget(Button(text='Импорт расписания',on_press=self.BUTTON_ImportTimesheet))
         layout.add_widget(Button(text='Редактирование',on_press=self.BUTTON_EditData))
-        layout.add_widget(Button(text='Уведомления'))
+        layout.add_widget(Button(text='Уведомления', disabled = True))
         layout.add_widget(Button(text='Пользователи',on_press = self.BUTTON_users))
-        layout.add_widget(Button(text='Расписание дежурств'))
+        layout.add_widget(Button(text='Расписание дежурств', disabled = True))
         layout.add_widget(Button(text='Статус', on_press=self.BUTTON_status))
         layout.add_widget(Button(text='Изменение расписания'))
-        layout.add_widget(Button(text='Перенести пару'))
-        layout.add_widget(Button(text='Заменить преподавателя'))
+        layout.add_widget(Button(text='Перенести пару', disabled = True))
+        layout.add_widget(Button(text='Заменить преподавателя', disabled = True))
         layout.add_widget(Button(text='Назад',on_press = self.BUTTON_return))
 
 
         bottomMenu = BoxLayout(orientation="horizontal", spacing=5, padding=[10])
-        button_new_pasword2 = Button(
-            text="button horizontal",
-            background_color=[2, 1.5, 3, 1],
-            size_hint=[1, 0.1],
-            on_press=self.BUTTON_return,
-        )
-        button_new_pasword3 = Button(
-            text="button horizontal",
-            background_color=[2, 1.5, 3, 1],
-            size_hint=[1, 0.1],
-            on_press=self.BUTTON_return,
-        )
 
-        bottomMenu.add_widget(button_new_pasword2)
-        bottomMenu.add_widget(button_new_pasword3)
         self.add_widget(layout)
         self.add_widget(bottomMenu)
 

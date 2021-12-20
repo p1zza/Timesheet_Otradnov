@@ -11,6 +11,7 @@ from Forms.AdministratorScreen import AdministratorScreen
 from Forms.ImportScreen import ImportScreen
 from Forms.UsersScreen import UsersScreen
 from Forms.EditDataScreen import EditDataScreen
+from kivy.core.window import Window
 
 from sqlite import Database
 
@@ -24,14 +25,14 @@ class ScreenMain(Screen):
 
         self.db = Database()  # TODO: Поймать sqlite3.Error и обработать
 
-        gridlayout = GridLayout(cols=3, row_force_default=True, row_default_height=40)
+        gridlayout = GridLayout(cols=3, row_force_default=True, row_default_height=40, col_default_width = 200)
         login_label = Label(text="Введите Логин", font_size=20)
         self.login_value = TextInput(multiline=False, size_hint=(.5, .25))
         password_label = Label(text="Введите Пароль", font_size=20)
         self.password_value = TextInput(multiline=False, size_hint=(.5, .25), password=True)
 
-        nullabel1 = Label(text = "", font_size=20)
-        nullabel2= Label(text="", font_size=20)
+        nullabel1 = Label(text="", font_size=20)
+        nullabel2 = Label(text="", font_size=20)
         nullabel3 = Label(text="", font_size=20)
         nullabel4 = Label(text="", font_size=20)
         nullabel5 = Label(text="", font_size=20)
@@ -71,11 +72,14 @@ class ScreenMain(Screen):
         gridlayout.add_widget(nullabel14)
         gridlayout.add_widget(nullabel15)
         gridlayout.add_widget(button_new_login)
+
+        Window.clearcolor = (0,0,0,0) #цвет бэкграунда
         self.add_widget(gridlayout)
 
     def BUTTON_login(self, *args):
         auth_role = self.db.authenticate(self.login_value.text, self.password_value.text)
-
+        self.login_value.text = ""
+        self.password_value.text = ""
 
         print (auth_role)
         if auth_role is None:
@@ -96,7 +100,6 @@ class ErrorScreen(Screen):
         boxlayout = BoxLayout(orientation="vertical", spacing=5, padding=[10])
         errorbutton = Button(
             text="Ошибка. Нажмите для возврата на главный экран",
-            background_color=[2, 1.5, 3, 1],
             size_hint=[1, 0.1],
             on_press=self.errorbutton_onclick,
         )

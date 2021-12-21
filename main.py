@@ -1,5 +1,6 @@
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
@@ -27,9 +28,9 @@ class ScreenMain(Screen):
 
         gridlayout = GridLayout(cols=3, row_force_default=True, row_default_height=40, col_default_width = 200)
         login_label = Label(text="Введите Логин", font_size=20)
-        self.login_value = TextInput(multiline=False, size_hint=(.5, .25))
+        self.login_value = TextInput(multiline=False, size_hint=(.5, .25),halign = 'center', font_size = 20)
         password_label = Label(text="Введите Пароль", font_size=20)
-        self.password_value = TextInput(multiline=False, size_hint=(.5, .25), password=True)
+        self.password_value = TextInput(multiline=False, size_hint=(.5, .25), password=True,halign = 'center',font_size = 20)
 
         nullabel1 = Label(text="", font_size=20)
         nullabel2 = Label(text="", font_size=20)
@@ -46,6 +47,8 @@ class ScreenMain(Screen):
         nullabel13 = Label(text="", font_size=20)
         nullabel14 = Label(text="", font_size=20)
         nullabel15 = Label(text="", font_size=20)
+        nullabel16 = Label(text="", font_size=20)
+        nullabel17 = Label(text="", font_size=20)
         button_new_login = Button(
             text="Вход",
             background_color=[0, 1.5, 3, 1],
@@ -64,7 +67,7 @@ class ScreenMain(Screen):
         gridlayout.add_widget(nullabel5)
         gridlayout.add_widget(password_label)
         gridlayout.add_widget(nullabel6)
-        gridlayout.add_widget(nullabel7)
+        gridlayout.add_widget(Label(text = 'Минимально 8 символов'))
         gridlayout.add_widget(self.password_value)
         gridlayout.add_widget(nullabel8)
         gridlayout.add_widget(nullabel9)
@@ -72,25 +75,33 @@ class ScreenMain(Screen):
         gridlayout.add_widget(nullabel14)
         gridlayout.add_widget(nullabel15)
         gridlayout.add_widget(button_new_login)
+        gridlayout.add_widget(nullabel16)
+        gridlayout.add_widget(nullabel17)
+        gridlayout.add_widget(Button(text="Регистрация",size_hint=[1, .5],disabled=True))
 
         Window.clearcolor = (0,0,0,0) #цвет бэкграунда
         self.add_widget(gridlayout)
 
     def BUTTON_login(self, *args):
         auth_role = self.db.authenticate(self.login_value.text, self.password_value.text)
-        self.login_value.text = ""
-        self.password_value.text = ""
-
         print (auth_role)
         if auth_role is None:
-            self.manager.transition.direction = 'right'
-            self.manager.current = 'errorscreen'
+            popup = Popup(title='Ошибка',content=TextInput(text=str(
+                '==Ошибка авторизации.== \n Пользователь с именем: <' + str(self.login_value.text)+'> и ролью <'+str(auth_role)+'> не найден в БД. \n'+
+            '\n ==Нажмите в любом месте для продолжения работы=='),
+                multiline=True),size_hint=(None, None), size=(250, 250))
+            popup.open()
+            #self.manager.transition.direction = 'right'
+            #self.manager.current = 'errorscreen'
         elif auth_role == "admin":
             self.manager.transition.direction = 'left'
             self.manager.current = 'adminscreen'
         elif auth_role == "laborant":
             self.manager.transition.direction = 'left'
             self.manager.current = 'laborantscreen'
+
+        self.login_value.text = ""
+        self.password_value.text = ""
 
 
 class ErrorScreen(Screen):

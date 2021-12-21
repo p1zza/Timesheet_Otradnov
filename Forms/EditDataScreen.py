@@ -15,12 +15,8 @@ class EditDataScreen(Screen):
 
         returnButton = Button(
         text="Назад",size_hint=(.5, .1),on_press=self. BUTTON_return)
-        gridlayout.add_widget(Label(
-            text="Экран редактирования информации В БД",
-            line_height=4
-        ))
+        gridlayout.add_widget(Label(text="Редактирование данных",line_height=4))
 
-        #TODO: сверху экрана надпись с кнопки
         gridlayout.add_widget(Button(text="Редактирование списка дисциплин", size_hint=[1, .5], disabled=True))
         gridlayout.add_widget(Button(text="Редактирование списка групп", size_hint=[1, .5], disabled=True))
         gridlayout.add_widget(Button(text="Редактирование расписания звонков", size_hint=[1, .5], disabled=True))

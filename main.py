@@ -29,9 +29,9 @@ class ScreenMain(Screen):
 
         gridlayout = GridLayout(cols=3, row_force_default=True, row_default_height=40, col_default_width = 200)
         login_label = Label(text="Введите Логин", font_size=20)
-        self.login_value = TextInput(multiline=False, size_hint=(.5, .25),halign = 'center', font_size = 20)
+        self.login_value = TextInput(multiline=False, size_hint=(.5, .25),halign = 'center', font_size = 20, hint_text = 'Логин')
         password_label = Label(text="Введите Пароль", font_size=20)
-        self.password_value = TextInput(multiline=False, size_hint=(.5, .25), password=True,halign = 'center',font_size = 20)
+        self.password_value = TextInput(multiline=False, size_hint=(.5, .25), password=True,halign = 'center',font_size = 20, hint_text = 'Пароль')
 
         nullabel1 = Label(text="", font_size=20)
         nullabel2 = Label(text="", font_size=20)
@@ -81,10 +81,14 @@ class ScreenMain(Screen):
         gridlayout.add_widget(button_new_login)
         gridlayout.add_widget(nullabel16)
         gridlayout.add_widget(nullabel17)
-        gridlayout.add_widget(Button(text="Регистрация",size_hint=[1, .5],on_click= self.BUTTON_Message))
+
+
+        bottomlayout = BoxLayout(orientation="vertical", spacing=5, padding=[10],size_hint=(1, .15))
+        bottomlayout.add_widget(Button(text="Регистрация",size_hint=[1, .5],on_click=self.BUTTON_Message))
+
         Window.clearcolor = (0,0,0,0) #цвет бэкграунда
         self.add_widget(gridlayout)
-
+        self.add_widget(bottomlayout)
         try:
             self.db = Database()
         except Exception as ex:
@@ -92,6 +96,10 @@ class ScreenMain(Screen):
                           content=TextInput(text=('\n\n\n'+str(ex.args)), multiline=True),
                           size_hint=(None, None), size=(200, 200),border = 'bottom')
             popup.open()
+
+    def BUTTON_Message(self,*args):
+        popup = Popup(title='Сообщение',content=TextInput(text='Данный функционал в разработке', multiline=True),size_hint=(None, None), size=(200, 200))
+        popup.open()
 
     def ShowPassword(self, *args):
         if self.flag == 0:
@@ -133,9 +141,7 @@ class ScreenMain(Screen):
             self.login_value.text = ""
             self.password_value.text = ""
 
-    def BUTTON_Message(self,*args):
-        popup = Popup(title='Сообщение',content=TextInput(text=('Данный функционал в разработке'), multiline=True),size_hint=(None, None), size=(200, 200))
-        popup.open()
+
 
 class PasswordingApp(App):
     def build(self):

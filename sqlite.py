@@ -9,6 +9,10 @@ from kivy.uix.textinput import TextInput
 import data_models
 
 
+class AlreadyExistsError(sqlite3.Error):
+    pass
+
+
 class Database:
     def __init__(self, db_path="timesheet.db"):
         self._connection = None
@@ -133,19 +137,35 @@ class Database:
 # TODO: Подгрузки данных
     def load_rooms(self):
         rooms = []
-        result = self.main_cursor.execute("SELECT rooms.id, campus, number, room_types.name FROM rooms "
+        result = self.main_cursor.execute("SELECT campus, number, room_types.type FROM rooms "
                                           "LEFT JOIN room_types ON rooms.type_id = room_types.id")
+        result = result.fetchone()
+        if not result:
+            return rooms
         for row in result:
-            rooms.append(data_models.Room(result[0], result[1], result[2], result[3]))
+            rooms.append(data_models.Room(result[0], result[1], result[2]))
         return rooms
 
     def add_room(self, room):
-        result = self.main_cursor.execute("SELECT id FROM room_types WHERE name = ?", room.type)
+        result = self.main_cursor.execute("SELECT id FROM room_types WHERE type = ?", (room.type.type,))
         result = result.fetchone()
         if len(result) != 1:
             raise sqlite3.Error("Внутренняя ошибка базы данных")
-        self.main_cursor.execute(f"INSERT INTO rooms(id, campus, number, type_id) VALUES(?, ?, ?, ?)",
-                                 room.id, room.campus, room.number, room.type)  # FIXME: Поправить под модель данных тип-аудитория, когда она будет определена
+        result = self.main_cursor.execute("SELECT id FROM rooms WHERE campus = ? AND number = ?",
+                                          (room.campus, room.number))
+        result = result.fetchone()
+        if result:
+            raise AlreadyExistsError("Такая аудитория уже существует")
+        self.main_cursor.execute(f"INSERT INTO rooms(campus, number, type_id) VALUES(?, ?, ?)",
+                                 (room.campus, room.number, room.type.type))
+        self._connection.commit()
+
+    def add_room_type(self, room_type):
+        result = self.main_cursor.execute("SELECT type FROM room_types WHERE type = ?", (room_type.type,))
+        result = result.fetchone()
+        if result:
+            raise AlreadyExistsError("Такой тип аудитории уже существует")
+        self.main_cursor.execute(f"INSERT INTO room_types (type) VALUES (?)", (room_type.type,))
         self._connection.commit()
 
     def load_personals(self):

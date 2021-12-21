@@ -10,14 +10,12 @@ class PersonalData:
 
 
 class RoomType:
-    def __init__(self, id, type):
-        self.id = id
+    def __init__(self, type):
         self.type = type
 
 
 class Room:
-    def __init__(self, id, campus, number, type):
-        self.id = id
+    def __init__(self, campus, number, type):
         self.campus = campus
         self.number = number
         self.type = type

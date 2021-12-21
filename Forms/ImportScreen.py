@@ -4,6 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
+import tkinter as tk
 import tkinter.filedialog
 
 import data_imports
@@ -44,6 +45,7 @@ class ImportScreen(Screen):
 
         self.add_widget(layout)
 
+        tk.Tk().withdraw()  # Для windows file dialog
         self.db = sqlite.Database()  # Обращение к Singleton
 
     def BUTTON_importRooms(self, *args):

@@ -14,6 +14,12 @@ class AlreadyExistsError(sqlite3.Error):
 
 
 class Database:
+    # Singleton
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(Database, cls).__new__(cls)
+        return cls.instance
+
     def __init__(self, db_path="timesheet.db"):
         self._connection = None
         self.main_cursor = None

@@ -19,13 +19,14 @@ class UsersScreen(Screen):
         self.userNameValue = TextInput(multiline=False, size_hint=(1, .5))
         self.PasswordValue = TextInput(multiline=False, size_hint=(1, .5))
 
-        layout.add_widget(Label(text="Ниже введите имя пользователя",line_height=1))
+        layout.add_widget(Label(text="Введите имя пользователя",line_height=1))
         layout.add_widget(Label(text=""))
         layout.add_widget(Label(text=""))
         layout.add_widget(self.userNameValue)
         layout.add_widget(Label(text=""))
         layout.add_widget(Label(text=""))
-        layout.add_widget(Label(text="Ниже введите его пароль",line_height=1))
+        layout.add_widget(Label(text="Придумайте пароль",line_height=1))
+        #TODO: hint_text='Пароль'
         layout.add_widget(Label(text=""))
         layout.add_widget(Label(text=""))
         layout.add_widget(self.PasswordValue)
@@ -40,6 +41,21 @@ class UsersScreen(Screen):
         bottommenu.add_widget((Button(text='', disabled=True, size_hint=(.5, 1))))
         bottommenu.add_widget(TextInput(multiline=True,text = "список пользователей в БД:"))
         self.add_widget(bottommenu)
+
+        #TODO: У полей следующее поведение: стоит некоторое ограничение по количеству символов.
+        # Они отсекаются в момент нажатия на кнопку «Добавить пользователя»
+        # и об этом сообщается пользователь.
+        # Подсказка серым текстом Логин(диапазон символов 4-20), пароль *(8-20),
+        # остальные поля по 30 символов. Выпадающий список роли
+        # Обязательные поля - Фамилия, Имя, Доступ (по умолчанию - юзер), лог и пароль
+        # В случае когда мы заполнили поля и тыкнули назад -данные не чистятся, две инпута с паролем.
+        # При нажатии кнопки назад второе поле пароля очищается
+        # При каждом незаполненном обязательном поле нужно проверить, что появляется ошибка -> кейсы
+        # поле почты обязательное - либо @mirea.ru и @edu.mirea.ru - На будущее поменять
+        # не заполнено несколько обязательбных полей -> добавить -> перечисление какие не заполнены
+        # TODO:блокируем добавление пользователя через UI. ПО кнопке "дОбавить пользователя"
+        # Функционал в разработке
+
 
         '''
         dropdown = DropDown()

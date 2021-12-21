@@ -11,23 +11,26 @@ class EditDataScreen(Screen):
         super().__init__(**kwargs)
 
         gridlayout = GridLayout(cols=3, row_force_default=True, row_default_height=40, col_default_width = 200)
-        layout = BoxLayout(orientation="vertical", spacing=5, padding=[10])
-        returnButton = Button(
-        text="Назад",
-        background_color=[2, 1.5, 3, 1],
-        size_hint=[1, 0.1],
-        on_press=self. BUTTON_return)
+        bottomlayout = BoxLayout(orientation="vertical", spacing=5, padding=[10],size_hint=(1, .15))
 
-        label = Label(
+        returnButton = Button(
+        text="Назад",size_hint=(.5, .1),on_press=self. BUTTON_return)
+        gridlayout.add_widget(Label(
             text="Экран редактирования информации В БД",
             line_height=4
-        )
+        ))
 
-        gridlayout.add_widget(layout)
-        gridlayout.add_widget(label)
-        gridlayout.add_widget(returnButton)
+        #TODO: сверху экрана надпись с кнопки
+        gridlayout.add_widget(Button(text="Редактирование списка дисциплин", size_hint=[1, .5], disabled=True))
+        gridlayout.add_widget(Button(text="Редактирование списка групп", size_hint=[1, .5], disabled=True))
+        gridlayout.add_widget(Button(text="Редактирование расписания звонков", size_hint=[1, .5], disabled=True))
+        gridlayout.add_widget(Button(text="Редактирование праздничных дней", size_hint=[1, .5], disabled=True))
+        gridlayout.add_widget(Button(text="Редактирование расписания", size_hint=[1, .5], disabled=True))
+        gridlayout.add_widget(Button(text="Редактирование списка аудиторий", size_hint=[1, .5], disabled=True))
 
+        bottomlayout.add_widget(returnButton)
         self.add_widget(gridlayout)
+        self.add_widget(bottomlayout)
 
     def BUTTON_return(self, *args):
         self.manager.transition.direction = 'right'

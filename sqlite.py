@@ -175,5 +175,4 @@ class Database:
         finally:
             popup = Popup(title='Сообщение от БД', content=Button(text = r'Пользователь ' + login + 'успешно добавлен', size_hint=(None, None),
                           size=(250, 250),on_click = popup.dismiss))
-
             popup.open()

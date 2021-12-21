@@ -1,3 +1,4 @@
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
@@ -9,7 +10,7 @@ class EditDataScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        boxlayout = BoxLayout(orientation="vertical", spacing=5, padding=[10])
+        gridlayout = GridLayout(cols=3, row_force_default=True, row_default_height=40, col_default_width = 200)
         layout = BoxLayout(orientation="vertical", spacing=5, padding=[10])
         returnButton = Button(
         text="Назад",
@@ -22,11 +23,11 @@ class EditDataScreen(Screen):
             line_height=4
         )
 
-        boxlayout.add_widget(layout)
-        boxlayout.add_widget(label)
-        boxlayout.add_widget(returnButton)
+        gridlayout.add_widget(layout)
+        gridlayout.add_widget(label)
+        gridlayout.add_widget(returnButton)
 
-        self.add_widget(boxlayout)
+        self.add_widget(gridlayout)
 
     def BUTTON_return(self, *args):
         self.manager.transition.direction = 'right'

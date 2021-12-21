@@ -1,3 +1,4 @@
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
@@ -7,45 +8,39 @@ from kivy.uix.button import Button
 from kivy.base import runTouchApp
 from kivy.uix.textinput import TextInput
 
+from sqlite import Database as DB
 
 class UsersScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        boxlayout = BoxLayout(orientation="horizontal", spacing=5, padding=[10])
+        layout = GridLayout(cols=3, row_force_default=True, row_default_height=40, col_default_width=200)
 
-        layout = BoxLayout(orientation="vertical", spacing=5, padding=[10])
-        returnButton = Button(
-        text="Назад",
-        background_color=[2, 1.5, 3, 1],
-        size_hint=[1, 0.1],
-        on_press=self. BUTTON_return)
-        addUserButton = Button(
-            text="Добавить Пользователя",
-            background_color=[2, 1.5, 3, 1],
-            size_hint=[1, 0.1],
-            on_press=self.BUTTON_return)
-
-        userName = Label(text="Ниже введите имя пользователя",
-            line_height=1
-        )
         userNameValue = TextInput(multiline=False, size_hint=(1, .5))
-        layout.add_widget(userName)
-        layout.add_widget(userNameValue)
-
-        userPassword = Label(text="Ниже введите его пароль",
-            line_height=1
-        )
         userPasswordValue = TextInput(multiline=False, size_hint=(1, .5))
-        layout.add_widget(userPassword)
+
+        layout.add_widget(Label(text="Ниже введите имя пользователя",line_height=1))
+        layout.add_widget(Label(text=""))
+        layout.add_widget(Label(text=""))
+        layout.add_widget(userNameValue)
+        layout.add_widget(Label(text=""))
+        layout.add_widget(Label(text=""))
+        layout.add_widget(Label(text="Ниже введите его пароль",line_height=1))
+        layout.add_widget(Label(text=""))
+        layout.add_widget(Label(text=""))
         layout.add_widget(userPasswordValue)
+        layout.add_widget(Label(text=""))
+        layout.add_widget(Button(text="Назад",size_hint=[1, 0.1],on_press=self. BUTTON_return))
+        layout.add_widget(Label(text=""))
+        layout.add_widget(Button(text="Добавить Пользователя",size_hint=[1, 0.1],disabled = True))
+        self.add_widget(layout)
 
+        bottommenu = BoxLayout(orientation='horizontal', size_hint=(1, .15))
+        bottommenu.add_widget((Button(text='', disabled=True, size_hint=(.5, 1))))
+        bottommenu.add_widget((Button(text='', disabled=True, size_hint=(.5, 1))))
+        bottommenu.add_widget(TextInput(multiline=True,text = "список пользователей в БД:"))
+        self.add_widget(bottommenu)
 
-        boxlayout.add_widget(layout)
-        boxlayout.add_widget(returnButton)
-        boxlayout.add_widget(addUserButton)
-
-        self.add_widget(boxlayout)
         '''
         dropdown = DropDown()
         for index in range(10):
@@ -80,6 +75,8 @@ class UsersScreen(Screen):
         boxlayout.add_widget(dropdown)
         '''
 
+    def AddUser_BUTTON(self,*args):
+        DB.add_personal()
 
     def BUTTON_return(self, *args):
         self.manager.transition.direction = 'right'

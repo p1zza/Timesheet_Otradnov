@@ -1,3 +1,5 @@
+import re
+
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.popup import Popup
@@ -20,11 +22,10 @@ from sqlite import Database
 class ScreenMain(Screen):
     login = ""
     password = ""
+    flag = 0
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-        self.db = Database()  # TODO: Поймать sqlite3.Error и обработать
 
         gridlayout = GridLayout(cols=3, row_force_default=True, row_default_height=40, col_default_width = 200)
         login_label = Label(text="Введите Логин", font_size=20)
@@ -67,7 +68,7 @@ class ScreenMain(Screen):
         gridlayout.add_widget(nullabel5)
         gridlayout.add_widget(password_label)
         gridlayout.add_widget(nullabel6)
-        gridlayout.add_widget(Label(text = 'Минимально 8 символов'))
+        gridlayout.add_widget(Label(text = '[color=ffffff][ref=]Подсмотреть пароль [/ref][/color]',markup = True,on_ref_press=self.ShowPassword))
         gridlayout.add_widget(self.password_value)
         gridlayout.add_widget(nullabel8)
         gridlayout.add_widget(nullabel9)
@@ -78,30 +79,51 @@ class ScreenMain(Screen):
         gridlayout.add_widget(nullabel16)
         gridlayout.add_widget(nullabel17)
         gridlayout.add_widget(Button(text="Регистрация",size_hint=[1, .5],disabled=True))
-
         Window.clearcolor = (0,0,0,0) #цвет бэкграунда
         self.add_widget(gridlayout)
 
-    def BUTTON_login(self, *args):
-        auth_role = self.db.authenticate(self.login_value.text, self.password_value.text)
-        print (auth_role)
-        if auth_role is None:
-            popup = Popup(title='Ошибка',content=TextInput(text=str(
-                '==Ошибка авторизации.== \n Пользователь с именем: <' + str(self.login_value.text)+'> и ролью <'+str(auth_role)+'> не найден в БД. \n'+
-            '\n ==Нажмите в любом месте для продолжения работы=='),
-                multiline=True),size_hint=(None, None), size=(250, 250))
+        try:
+            self.db = Database()
+        except Exception as ex:
+            popup = Popup(title='Ошибка',
+                          content=TextInput(text=('\n\n\n'+str(ex.args)), multiline=True),
+                          size_hint=(None, None), size=(200, 200),border = 'bottom')
             popup.open()
-            #self.manager.transition.direction = 'right'
-            #self.manager.current = 'errorscreen'
-        elif auth_role == "admin":
-            self.manager.transition.direction = 'left'
-            self.manager.current = 'adminscreen'
-        elif auth_role == "laborant":
-            self.manager.transition.direction = 'left'
-            self.manager.current = 'laborantscreen'
 
-        self.login_value.text = ""
-        self.password_value.text = ""
+    def ShowPassword(self, *args):
+
+        if self.flag == 0:
+            self.password_value.password =False
+            self.flag+=1
+        else:
+            self.flag=0
+            self.password_value.password = True
+
+    def BUTTON_login(self, *args):
+
+        try:
+            auth_role = self.db.authenticate(self.login_value.text, self.password_value.text)
+        except Exception as ex:
+            popup = Popup(title='Ошибка', content=TextInput(text = ex.args,multiline=True), size_hint=(None, None), size=(250, 250))
+            popup.open()
+
+        finally:
+            print (auth_role)
+            if auth_role is None:
+                popup = Popup(title='Ошибка',content=TextInput(text=str(
+                    '==Ошибка авторизации.== \n Пользователь с именем: <' + str(self.login_value.text)+'> и ролью <'+str(auth_role)+'> не найден в БД. \n'+
+                '\n ==Нажмите в любом месте для продолжения работы=='),
+                    multiline=True),size_hint=(None, None), size=(250, 250))
+                popup.open()
+            elif auth_role == "admin":
+                self.manager.transition.direction = 'left'
+                self.manager.current = 'adminscreen'
+            elif auth_role == "laborant":
+                self.manager.transition.direction = 'left'
+                self.manager.current = 'laborantscreen'
+
+            self.login_value.text = ""
+            self.password_value.text = ""
 
 
 class ErrorScreen(Screen):
@@ -133,7 +155,6 @@ class PaswordingApp(App):
         sm.add_widget(UsersScreen(name='USERS_screen'))
         sm.add_widget(EditDataScreen(name='EditData_screen'))
         return sm
-
 
 if __name__ == "__main__":
     PaswordingApp().run()

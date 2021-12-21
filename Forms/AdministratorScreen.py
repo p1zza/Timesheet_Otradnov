@@ -24,15 +24,26 @@ class AdministratorScreen(Screen):
         layout.add_widget(Button(text='Заменить преподавателя', disabled = True))
         layout.add_widget(Button(text='Назад',on_press = self.BUTTON_return))
 
+        bottommenu = BoxLayout(orientation = 'horizontal',size_hint=(1, .15))
+        bottommenu.add_widget((Button(text='', disabled = True, size_hint=(.5, 1))))
+        bottommenu.add_widget((Button(text='', disabled=True, size_hint=(.5, 1))))
+        bottommenu.add_widget((Button(text='', disabled=True, size_hint=(.5, 1))))
+        bottommenu.add_widget((Button(text='', disabled=True, size_hint=(.5, 1))))
+        bottommenu.add_widget((Button(text='', disabled=True, size_hint=(.5, 1))))
+        bottommenu.add_widget(Button(text='Выход',on_press=self.BUTTON_exit, size_hint=(.5, 1)))
 
-        bottomMenu = BoxLayout(orientation="horizontal", spacing=5, padding=[10])
 
         self.add_widget(layout)
-        self.add_widget(bottomMenu)
+        self.add_widget(bottommenu)
+
 
     def BUTTON_users(self,*args):
         self.manager.transition.direction = 'left'
         self.manager.current = 'USERS_screen'
+
+    def BUTTON_exit(self,*args):
+        self.manager.transition.direction = 'left'
+        self.manager.current = 'LOGIN_screen'
 
     def BUTTON_ImportTimesheet(self,*args):
         # TODO: обработка ексель-файла

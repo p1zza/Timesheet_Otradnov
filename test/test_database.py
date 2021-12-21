@@ -12,7 +12,8 @@ class DatabaseTestCase(unittest.TestCase):
         #    os.remove(os.path.join("..", "timesheet.db.bak"))
         # if os.path.exists(os.path.join("..", "timesheet.db")):
         #    os.rename(os.path.join("..", "timesheet.db"), os.path.join("..", "timesheet.db.bak"))
-
+        if os.path.exists("timesheet.db"):
+            os.remove("timesheet.db")
         self.db = Database()
         with open("test_data.sql", 'r', encoding='utf-8') as file:
             sql_as_string = file.read()

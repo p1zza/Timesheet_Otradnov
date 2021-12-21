@@ -121,7 +121,6 @@ class Database:
         self.main_cursor.execute(f"INSERT INTO user_data(login, password, role) VALUES('laborant', "
                                  f"'{sha256('laborant'.encode('utf-8')).hexdigest()}', 'laborant')")
         self._connection.commit()
-        raise sqlite3.Error("Создание базы данных")
 
     def authenticate(self, login, password):
         password = sha256(password.encode('utf-8')).hexdigest()

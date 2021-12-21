@@ -5,6 +5,9 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 import tkinter.filedialog
 
+import data_imports
+import sqlite
+
 
 class ImportScreen(Screen):
     label=Label()
@@ -22,17 +25,43 @@ class ImportScreen(Screen):
             size_hint=[1, 0.1],
             on_press=self.BUTTON_import
         )
+        importRoomsButton = Button(
+            text="Импорт аудиторий",
+            size_hint=[1, 0.1],
+            on_press=self.BUTTON_importRooms
+        )
         clearButton = Button(
             text="Очистить путь",
             size_hint=[1, 0.1],disabled=True)
 
         self.label = Label(text = "Расписание еще не загружено, Вы можете стать первым!",line_height = 4)
         layout.add_widget(importButton)
+        layout.add_widget(importRoomsButton)
         layout.add_widget(clearButton)
         layout.add_widget(self.label)
         layout.add_widget(returnButton)
 
         self.add_widget(layout)
+
+        self.db = sqlite.Database()  # Обращение к Singleton
+
+    def BUTTON_importRooms(self, *args):
+        filepath = tkinter.filedialog.askopenfilename(title="Выберите файл с аудиториями",
+                                                      filetypes=(('csv files', '*.csv'),))
+        rooms, types = data_imports.import_rooms_from_file(filepath)
+
+        for room_type in types:
+            try:
+                self.db.add_room_type(room_type)
+            except sqlite.AlreadyExistsError:
+                print("RoomType to DB - AlreadyExists")
+                pass
+        for room in rooms:
+            try:
+                self.db.add_room(room)
+            except sqlite.AlreadyExistsError:
+                print("Room to DB - AlreadyExists")
+                pass
 
     def BUTTON_import(self, *args):
 

@@ -3,11 +3,12 @@ from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
+from kivy.uix.popup import Popup
 import tkinter.filedialog
 
 import data_imports
 import sqlite
-
+import os
 
 class ImportScreen(Screen):
     label=Label()
@@ -48,6 +49,13 @@ class ImportScreen(Screen):
     def BUTTON_importRooms(self, *args):
         filepath = tkinter.filedialog.askopenfilename(title="Выберите файл с аудиториями",
                                                       filetypes=(('csv files', '*.csv'),))
+        if filepath == '':
+            return
+        if not os.path.exists(filepath) or not os.path.isfile(filepath):
+            popup = Popup(title='Ошибка', content=Label(text="Указанный файл не найден",
+                                                        size_hint=(None, None), size=(250, 250)))
+            popup.open()
+            return
         rooms, types = data_imports.import_rooms_from_file(filepath)
 
         for room_type in types:

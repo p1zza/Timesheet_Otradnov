@@ -50,6 +50,9 @@ class ScreenMain(Screen):
         nullabel15 = Label(text="", font_size=20)
         nullabel16 = Label(text="", font_size=20)
         nullabel17 = Label(text="", font_size=20)
+        nullabel18 = Label(text="", font_size=20)
+        nullabel19 = Label(text="", font_size=20)
+        nullabel20 = Label(text="", font_size=20)
         button_new_login = Button(
             text="Вход",
             background_color=[0, 1.5, 3, 1],
@@ -68,7 +71,8 @@ class ScreenMain(Screen):
         gridlayout.add_widget(nullabel5)
         gridlayout.add_widget(password_label)
         gridlayout.add_widget(nullabel6)
-        gridlayout.add_widget(Label(text = '[color=ffffff][ref=]Подсмотреть пароль [/ref][/color]',markup = True,on_ref_press=self.ShowPassword))
+        gridlayout.add_widget(Label(text = '[color=ffffff][ref=]Посмотреть пароль [/ref][/color]',markup = True,on_ref_press=self.ShowPassword))
+        #gridlayout.add_widget(Button(text='Посмотреть пароль',on_click=self.ShowPassword))
         gridlayout.add_widget(self.password_value)
         gridlayout.add_widget(nullabel8)
         gridlayout.add_widget(nullabel9)
@@ -78,7 +82,7 @@ class ScreenMain(Screen):
         gridlayout.add_widget(button_new_login)
         gridlayout.add_widget(nullabel16)
         gridlayout.add_widget(nullabel17)
-        gridlayout.add_widget(Button(text="Регистрация",size_hint=[1, .5],disabled=True))
+        gridlayout.add_widget(Button(text="Регистрация",size_hint=[1, .5],on_click= self.InfoMessage))
         Window.clearcolor = (0,0,0,0) #цвет бэкграунда
         self.add_widget(gridlayout)
 
@@ -91,27 +95,29 @@ class ScreenMain(Screen):
             popup.open()
 
     def ShowPassword(self, *args):
-
         if self.flag == 0:
             self.password_value.password =False
             self.flag+=1
         else:
             self.flag=0
-            self.password_value.password = True
+            self.password_value.password =True
 
     def BUTTON_login(self, *args):
-
         try:
             auth_role = self.db.authenticate(self.login_value.text, self.password_value.text)
+
+            #TODO: проверка на незаполненные поля + рэйз ошибки
+
         except Exception as ex:
             popup = Popup(title='Ошибка', content=TextInput(text = ex.args,multiline=True), size_hint=(None, None), size=(250, 250))
             popup.open()
 
         finally:
             print (auth_role)
+
+            #TODO: менее информативный текст ошибки
             if auth_role is None:
-                popup = Popup(title='Ошибка',content=TextInput(text=str(
-                    '==Ошибка авторизации.== \n Пользователь с именем: <' + str(self.login_value.text)+'> и ролью <'+str(auth_role)+'> не найден в БД. \n'+
+                popup = Popup(title='Ошибка',content=TextInput(text=str('==Ошибка авторизации. Пользователь не найден в БД. \n'+
                 '\n ==Нажмите в любом месте для продолжения работы=='),
                     multiline=True),size_hint=(None, None), size=(250, 250))
                 popup.open()
@@ -124,6 +130,10 @@ class ScreenMain(Screen):
 
             self.login_value.text = ""
             self.password_value.text = ""
+
+    def InfoMessage(self,*args):
+        popup = Popup(title='Ошибка',content=TextInput(text=str('Функция в разработке'),multiline=True), size_hint=(None, None), size=(250, 250))
+        popup.open()
 
 
 class ErrorScreen(Screen):
@@ -144,7 +154,7 @@ class ErrorScreen(Screen):
         self.manager.current = 'LOGIN_screen'
 
 
-class PaswordingApp(App):
+class PasswordingApp(App):
     def build(self):
         sm = ScreenManager()
         sm.add_widget(ScreenMain(name='LOGIN_screen'))
@@ -157,4 +167,4 @@ class PaswordingApp(App):
         return sm
 
 if __name__ == "__main__":
-    PaswordingApp().run()
+    PasswordingApp().run()

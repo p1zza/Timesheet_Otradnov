@@ -73,3 +73,11 @@ CREATE TABLE IF NOT EXISTS timesheet (
     FOREIGN KEY (subject_id) REFERENCES subjects(id),
     FOREIGN KEY (class_type_id) REFERENCES class_types(id)
 );
+
+CREATE TABLE IF NOT EXISTS timesheet_saves (
+    id NUMERIC PRIMARY KEY ASC,
+    timestamp INTEGER,
+    hash TEXT,
+    saved_uid INTEGER,
+    FOREIGN KEY (saved_uid) REFERENCES user_data(uid)
+);

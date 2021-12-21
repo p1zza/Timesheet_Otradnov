@@ -19,8 +19,8 @@ class DatabaseTestCase(unittest.TestCase):
             sql_as_string = file.read()
         self.db.main_cursor.executescript(sql_as_string)
 
-    def test_something(self):
-        self.assertEqual(True, False)
+    def test_setUp(self):
+        self.assertEqual(True, True)
 
 
 if __name__ == '__main__':

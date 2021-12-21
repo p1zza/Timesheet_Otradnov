@@ -140,3 +140,18 @@ INSERT INTO timesheet (room_id, lecturer_id, group_id, class_type_id, subject_id
          '14.09.2021',
          1
         );
+
+INSERT INTO timesheet_saves (id,timestamp,hash,saved_uid)
+ VALUES (
+         1,
+         1640106134,
+         "87b65817d96d40085d3da7ba824108531488ef3d2404e50d6d5355b27365b300",
+         1
+        );
+INSERT INTO timesheet_saves (id,timestamp,hash,saved_uid)
+ VALUES (
+         2,
+         1640103132,
+         "abb45ef89186194a3e3ee700894caeb3b86ced38db1fa3ec7fd0f5e2ff6d9ec1",
+         2
+        );

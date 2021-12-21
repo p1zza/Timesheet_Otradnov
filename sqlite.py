@@ -2,6 +2,10 @@ import sqlite3
 import os
 from hashlib import sha256
 
+from kivy.uix.button import Button
+from kivy.uix.popup import Popup
+from kivy.uix.textinput import TextInput
+
 import data_models
 
 
@@ -159,5 +163,18 @@ class Database:
                                  personal_data.name, personal_data.surname, personal_data.patronymic,
                                  personal_data.email, personal_data.phone, personal_data.photo)
         self._connection.commit()
+
     def add_user(self,login,password,role):
-        pass
+        try:
+            self.main_cursor.execute(f"INSERT INTO user_data(login, password, role) VALUES(?,?,?)",
+                                     login, sha256(password.encode('utf-8')).hexdigest(),role)
+            self._connection.commit()
+        except Exception as ex:
+            popup = Popup(title='Ошибка',content=TextInput(text=str(ex.args), size_hint=(None, None),size=(250, 250)))
+            popup.open()
+
+        finally:
+            popup = Popup(title='Сообщение от БД', content=Button(text = r'Пользователь ' + login + 'успешно добавлен', size_hint=(None, None),
+                          size=(250, 250),on_click = popup.dismiss))
+
+            popup.open()

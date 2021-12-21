@@ -16,23 +16,23 @@ class UsersScreen(Screen):
 
         layout = GridLayout(cols=3, row_force_default=True, row_default_height=40, col_default_width=200)
 
-        userNameValue = TextInput(multiline=False, size_hint=(1, .5))
-        userPasswordValue = TextInput(multiline=False, size_hint=(1, .5))
+        self.userNameValue = TextInput(multiline=False, size_hint=(1, .5))
+        self.PasswordValue = TextInput(multiline=False, size_hint=(1, .5))
 
         layout.add_widget(Label(text="Ниже введите имя пользователя",line_height=1))
         layout.add_widget(Label(text=""))
         layout.add_widget(Label(text=""))
-        layout.add_widget(userNameValue)
+        layout.add_widget(self.userNameValue)
         layout.add_widget(Label(text=""))
         layout.add_widget(Label(text=""))
         layout.add_widget(Label(text="Ниже введите его пароль",line_height=1))
         layout.add_widget(Label(text=""))
         layout.add_widget(Label(text=""))
-        layout.add_widget(userPasswordValue)
+        layout.add_widget(self.PasswordValue)
         layout.add_widget(Label(text=""))
         layout.add_widget(Button(text="Назад",size_hint=[1, 0.1],on_press=self. BUTTON_return))
         layout.add_widget(Label(text=""))
-        layout.add_widget(Button(text="Добавить Пользователя",size_hint=[1, 0.1],disabled = True))
+        layout.add_widget(Button(text="Добавить Пользователя",size_hint=[1, 0.1],on_press = self.BUTTON_AddUser))
         self.add_widget(layout)
 
         bottommenu = BoxLayout(orientation='horizontal', size_hint=(1, .15))
@@ -75,8 +75,9 @@ class UsersScreen(Screen):
         boxlayout.add_widget(dropdown)
         '''
 
-    def AddUser_BUTTON(self,*args):
-        DB.add_personal()
+    def BUTTON_AddUser(self,*args):
+        role = 'admin'
+        DB.add_user(self,self.userNameValue.text, self.PasswordValue.text, role)
 
     def BUTTON_return(self, *args):
         self.manager.transition.direction = 'right'

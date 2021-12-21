@@ -1,3 +1,4 @@
+from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
@@ -8,7 +9,6 @@ from kivy.uix.button import Button
 from kivy.base import runTouchApp
 from kivy.uix.textinput import TextInput
 
-from sqlite import Database as DB
 
 class UsersScreen(Screen):
     def __init__(self, **kwargs):
@@ -16,24 +16,35 @@ class UsersScreen(Screen):
 
         layout = GridLayout(cols=3, row_force_default=True, row_default_height=40, col_default_width=200)
 
-        self.userNameValue = TextInput(multiline=False, size_hint=(1, .5))
-        self.PasswordValue = TextInput(multiline=False, size_hint=(1, .5))
-
-        layout.add_widget(Label(text="Введите имя пользователя",line_height=1))
-        layout.add_widget(Label(text=""))
-        layout.add_widget(Label(text=""))
+        self.userNameValue = TextInput(multiline=False, size_hint=(1, .5),hint_text='Логин (4-20 символов)',halign = 'center', font_size = 20)
+        self.PasswordValue = TextInput(multiline=False, size_hint=(1, .5),hint_text='Пароль (8-20 символов)',halign = 'center', font_size = 20,password=True)
+        self.SPasswordValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Повторно введите пароль', halign='center',font_size=20,password=True)
+        self.SurnameValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Фамилия',halign='center', font_size=20)
+        self.patronymicValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Отчество',halign='center', font_size=20)
+        self.nameValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Имя', halign='center',font_size=20)
+        self.roleValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Роль', halign='center', font_size=20)
+        self.mailValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Почта', halign='center', font_size=20)
+        layout.add_widget(Label(text="Введите логин пользователя",line_height=1))
+        layout.add_widget(Label(text="Введите Фамилию",line_height=1))
+        layout.add_widget(Label(text="Введите Отчество",line_height=1))
         layout.add_widget(self.userNameValue)
-        layout.add_widget(Label(text=""))
-        layout.add_widget(Label(text=""))
+        layout.add_widget(self.SurnameValue)
+        layout.add_widget(self.patronymicValue)
         layout.add_widget(Label(text="Придумайте пароль",line_height=1))
-        #TODO: hint_text='Пароль'
-        layout.add_widget(Label(text=""))
-        layout.add_widget(Label(text=""))
+        layout.add_widget(Label(text="Введите полное Имя"))
+        layout.add_widget(Label(text="Введите роль"))
         layout.add_widget(self.PasswordValue)
+        layout.add_widget( self.nameValue)
+        layout.add_widget(self.roleValue)
+        layout.add_widget(self.SPasswordValue)
+        layout.add_widget(self.mailValue)
+        layout.add_widget(Button(text="Добавить Пользователя", size_hint=[1, 0.1], on_press=self.BUTTON_AddUser))
+        layout.add_widget(Label(text=""))
+        layout.add_widget(Label(text=""))
+
+        layout.add_widget(Label(text=""))
         layout.add_widget(Label(text=""))
         layout.add_widget(Button(text="Назад",size_hint=[1, 0.1],on_press=self. BUTTON_return))
-        layout.add_widget(Label(text=""))
-        layout.add_widget(Button(text="Добавить Пользователя",size_hint=[1, 0.1],on_press = self.BUTTON_AddUser))
         self.add_widget(layout)
 
         bottommenu = BoxLayout(orientation='horizontal', size_hint=(1, .15))
@@ -57,43 +68,9 @@ class UsersScreen(Screen):
         # Функционал в разработке
 
 
-        '''
-        dropdown = DropDown()
-        for index in range(10):
-            # When adding widgets, we need to specify the height manually
-            # (disabling the size_hint_y) so the dropdown can calculate
-            # the area it needs.
-
-            btn = Button(text='Value %d' % index, size_hint_y=None, height=44)
-
-            # for each button, attach a callback that will call the select() method
-            # on the dropdown. We'll pass the text of the button as the data of the
-            # selection.
-            btn.bind(on_release=lambda btn: dropdown.select(btn.text))
-
-            # then add the button inside the dropdown
-            dropdown.add_widget(btn)
-
-        # create a big main button
-        mainbutton = Button(text='Hello', size_hint=(None, None))
-
-        # show the dropdown menu when the main button is released
-        # note: all the bind() calls pass the instance of the caller (here, the
-        # mainbutton instance) as the first argument of the callback (here,
-        # dropdown.open.).
-        mainbutton.bind(on_release=dropdown.open)
-
-        # one last thing, listen for the selection in the dropdown list and
-        # assign the data to the button text.
-        dropdown.bind(on_select=lambda instance, x: setattr(mainbutton, 'text', x))
-
-        runTouchApp(mainbutton)
-        boxlayout.add_widget(dropdown)
-        '''
-
     def BUTTON_AddUser(self,*args):
-        role = 'admin'
-        DB.add_user(self,self.userNameValue.text, self.PasswordValue.text, role)
+        popup = Popup(title='Сообщение',content=TextInput(text=('Данный функционал в разработке'), multiline=True),size_hint=(None, None), size=(200, 200), border='bottom')
+        popup.open()
 
     def BUTTON_return(self, *args):
         self.manager.transition.direction = 'right'

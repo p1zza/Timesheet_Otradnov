@@ -72,7 +72,6 @@ class ScreenMain(Screen):
         gridlayout.add_widget(password_label)
         gridlayout.add_widget(nullabel6)
         gridlayout.add_widget(Label(text = '[color=ffffff][ref=]Посмотреть пароль [/ref][/color]',markup = True,on_ref_press=self.ShowPassword))
-        #gridlayout.add_widget(Button(text='Посмотреть пароль',on_click=self.ShowPassword))
         gridlayout.add_widget(self.password_value)
         gridlayout.add_widget(nullabel8)
         gridlayout.add_widget(nullabel9)
@@ -82,7 +81,7 @@ class ScreenMain(Screen):
         gridlayout.add_widget(button_new_login)
         gridlayout.add_widget(nullabel16)
         gridlayout.add_widget(nullabel17)
-        gridlayout.add_widget(Button(text="Регистрация",size_hint=[1, .5],on_click= self.InfoMessage))
+        gridlayout.add_widget(Button(text="Регистрация",size_hint=[1, .5],on_click= self.BUTTON_Message))
         Window.clearcolor = (0,0,0,0) #цвет бэкграунда
         self.add_widget(gridlayout)
 
@@ -105,8 +104,15 @@ class ScreenMain(Screen):
     def BUTTON_login(self, *args):
         try:
             auth_role = self.db.authenticate(self.login_value.text, self.password_value.text)
-
-            #TODO: проверка на незаполненные поля + рэйз ошибки
+            if self.login_value.text == '':
+                popup = Popup(title='Ошибка', content=TextInput(text='Поле ввода логина пустое', multiline=True), size_hint=(None, None),
+                              size=(250, 250))
+                popup.open()
+            if self.password_value.text == '':
+                popup = Popup(title='Ошибка', content=TextInput(text='Поле ввода пароля пустое', multiline=True),
+                              size_hint=(None, None),
+                              size=(250, 250))
+                popup.open()
 
         except Exception as ex:
             popup = Popup(title='Ошибка', content=TextInput(text = ex.args,multiline=True), size_hint=(None, None), size=(250, 250))
@@ -114,12 +120,8 @@ class ScreenMain(Screen):
 
         finally:
             print (auth_role)
-
-            #TODO: менее информативный текст ошибки
             if auth_role is None:
-                popup = Popup(title='Ошибка',content=TextInput(text=str('==Ошибка авторизации. Пользователь не найден в БД. \n'+
-                '\n ==Нажмите в любом месте для продолжения работы=='),
-                    multiline=True),size_hint=(None, None), size=(250, 250))
+                popup = Popup(title='Ошибка',content=TextInput(text=str('Ошибка авторизации'),multiline=True),size_hint=(None, None), size=(250, 250))
                 popup.open()
             elif auth_role == "admin":
                 self.manager.transition.direction = 'left'
@@ -131,35 +133,15 @@ class ScreenMain(Screen):
             self.login_value.text = ""
             self.password_value.text = ""
 
-    def InfoMessage(self,*args):
-        popup = Popup(title='Ошибка',content=TextInput(text=str('Функция в разработке'),multiline=True), size_hint=(None, None), size=(250, 250))
+    def BUTTON_Message(self,*args):
+        popup = Popup(title='Сообщение',content=TextInput(text=('Данный функционал в разработке'), multiline=True),size_hint=(None, None), size=(200, 200))
         popup.open()
-
-
-class ErrorScreen(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-        boxlayout = BoxLayout(orientation="vertical", spacing=5, padding=[10])
-        errorbutton = Button(
-            text="Ошибка. Нажмите для возврата на главный экран",
-            size_hint=[1, 0.1],
-            on_press=self.errorbutton_onclick,
-        )
-        boxlayout.add_widget(errorbutton)
-        self.add_widget(boxlayout)
-
-    def errorbutton_onclick(self, *args):
-        self.manager.transition.direction = 'right'
-        self.manager.current = 'LOGIN_screen'
-
 
 class PasswordingApp(App):
     def build(self):
         sm = ScreenManager()
         sm.add_widget(ScreenMain(name='LOGIN_screen'))
         sm.add_widget(AdministratorScreen(name='adminscreen'))
-        sm.add_widget(ErrorScreen(name='errorscreen'))
         sm.add_widget(LaborantScreen(name='laborantscreen'))
         sm.add_widget(ImportScreen(name='IMPORT_screen'))
         sm.add_widget(UsersScreen(name='USERS_screen'))

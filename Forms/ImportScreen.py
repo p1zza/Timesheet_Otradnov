@@ -60,7 +60,7 @@ class ImportScreen(Screen):
         if filepath == '':
             return
         if not os.path.exists(filepath) or not os.path.isfile(filepath):
-            popup = Popup(title='Ошибка', content=Label(text="Указанный файл не найден",
+            popup = Popup(title='Ошибка', content=Label(text="Файл не соответствует шаблону. Слишком маленький размер файла",
                                                         size_hint=(None, None), size=(250, 250)))
             popup.open()
             return
@@ -84,7 +84,7 @@ class ImportScreen(Screen):
         if filepath == '':
             return
         if not os.path.exists(filepath) or not os.path.isfile(filepath):
-            popup = Popup(title='Ошибка', content=Label(text="Указанный файл не найден",
+            popup = Popup(title='Ошибка', content=Label(text="Файл не соответствует шаблону. Слишком маленький размер файла",
                                                         size_hint=(None, None), size=(250, 250)))
             popup.open()
             return

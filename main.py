@@ -71,11 +71,13 @@ class ScreenMain(Screen):
         gridlayout.add_widget(nullabel5)
         gridlayout.add_widget(password_label)
         gridlayout.add_widget(nullabel6)
-        gridlayout.add_widget(Label(text = '[color=ffffff][ref=]Посмотреть пароль [/ref][/color]',markup = True,on_ref_press=self.ShowPassword))
-        gridlayout.add_widget(self.password_value)
         gridlayout.add_widget(nullabel8)
+        gridlayout.add_widget(self.password_value)
         gridlayout.add_widget(nullabel9)
         gridlayout.add_widget(nullabel13)
+        gridlayout.add_widget(Label(text='[color=ffffff][ref=]Посмотреть пароль [/ref][/color]', markup=True,
+                                    on_ref_press=self.ShowPassword))
+
         gridlayout.add_widget(nullabel14)
         gridlayout.add_widget(nullabel15)
         gridlayout.add_widget(button_new_login)

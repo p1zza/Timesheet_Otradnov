@@ -84,7 +84,7 @@ class ScreenMain(Screen):
 
 
         bottomlayout = BoxLayout(orientation="vertical", spacing=5, padding=[10],size_hint=(1, .15))
-        bottomlayout.add_widget(Button(text="Регистрация",size_hint=[1, .5],on_click=self.BUTTON_Message))
+        bottomlayout.add_widget(Button(text="Регистрация",size_hint=[1, .5],on_press=self.BUTTON_Message))
 
         Window.clearcolor = (0,0,0,0) #цвет бэкграунда
         self.add_widget(gridlayout)

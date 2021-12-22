@@ -6,6 +6,7 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 import tkinter as tk
 import tkinter.filedialog
+import datetime
 
 import data_imports
 import sqlite
@@ -32,14 +33,19 @@ class ImportScreen(Screen):
             size_hint=[1, 0.1],
             on_press=self.BUTTON_importRooms
         )
-        clearButton = Button(
+        self.saveButton = Button(
+            text="Сохранить файл",
+            size_hint=[1, 0.1], disabled=True, on_press = self.BUTTON_save)
+
+        self.clearButton = Button(
             text="Очистить путь",
-            size_hint=[1, 0.1],disabled=True)
+            size_hint=[1, 0.1],disabled=True, on_press = self.BUTTON_clear)
 
         self.label = Label(text = "Расписание еще не загружено, Вы можете стать первым!",line_height = 4)
         layout.add_widget(importButton)
         layout.add_widget(importRoomsButton)
-        layout.add_widget(clearButton)
+        layout.add_widget(self.saveButton)
+        layout.add_widget(self.clearButton)
         layout.add_widget(self.label)
         layout.add_widget(returnButton)
 
@@ -75,13 +81,21 @@ class ImportScreen(Screen):
 
     def BUTTON_import(self, *args):
         filepath = tkinter.filedialog.askopenfilename(title="Выберите файл с расписанием",filetypes=(('xls files','*.xls'),))
-
+        if filepath == '':
+            return
+        if not os.path.exists(filepath) or not os.path.isfile(filepath):
+            popup = Popup(title='Ошибка', content=Label(text="Указанный файл не найден",
+                                                        size_hint=(None, None), size=(250, 250)))
+            popup.open()
+            return
         #TODO: должна иметься информация о файле – либо файл такой же, как и был до загрузки нового файла, либо дату последней загрузки файла.
         #TODO: если не выбрали файл, строка ниже не отображается. Отображается исходное сообщение
         #TODO: кнопка отмены/сброса расписания
         #TODO: строка информации о файле с датами. ЕЩЁ не загружена таблица (в данный момент никаких данных нет)
 
         self.label.text = "Выбран путь: \n " + filepath
+        self.clearButton.disabled = False
+        self.saveButton.disabled = False
         #TODO:Отображение модального окна - СОхранить и отменить. Кнопка Отмены вернет нас в основное окно с надписиью "Вы первый"
         # или "путь до файла"
         #TODO:Если так нельзя сделать, делаем отбойник через дизаблед кнопку "Сохранить" рядом с кнопкой "Очистить путь".
@@ -112,6 +126,13 @@ class ImportScreen(Screen):
             self.create_object(x, y) 
                        
         '''
+    def BUTTON_save(self,*args):
+        now = datetime.datetime.now()
+        self.label.text = "Данные о последнем обновлении расписания - " + now.strftime("%d-%m-%Y %H:%M:%S")
+
+    def BUTTON_clear(self,*args):
+        self.label.text = "Расписание еще не загружено, Вы можете стать первым!"
+        self.saveButton.disabled=True
 
     def BUTTON_return(self, *args):
         self.manager.transition.direction = 'right'

@@ -17,7 +17,7 @@ class EditDataScreen(Screen):
         bottomlayout = BoxLayout(orientation="vertical", spacing=5, padding=[10],size_hint=(1, .15))
 
         returnButton = Button(
-        text="Назад",size_hint=(.5, .1),on_press=self. BUTTON_return)
+        text="Назад",size_hint=(.5, .1),on_press=self. BUTTON_return,background_color=[0, 1.5, 3, 1])
         gridlayout.add_widget(Label(text="Редактирование данных",line_height=4))
 
         gridlayout.add_widget(Button(text="Редактирование списка дисциплин", size_hint=[1, .5], on_press = self.BUTTON_Message))

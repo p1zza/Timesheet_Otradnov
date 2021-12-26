@@ -19,11 +19,11 @@ class UsersScreen(Screen):
         self.userNameValue = TextInput(multiline=False, size_hint=(1, .5),hint_text='Логин (4-20 символов)',halign = 'center', font_size = 20)
         self.PasswordValue = TextInput(multiline=False, size_hint=(1, .5),hint_text='Пароль (8-20 символов)',halign = 'center', font_size = 20,password=True)
         self.SPasswordValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Повторно введите пароль', halign='center',font_size=20,password=True)
-        self.SurnameValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Фамилия',halign='center', font_size=20)
-        self.patronymicValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Отчество',halign='center', font_size=20)
-        self.nameValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Имя', halign='center',font_size=20)
+        self.SurnameValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Фамилия (30 символов)',halign='center', font_size=20)
+        self.patronymicValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Отчество (30 символов)',halign='center', font_size=20)
+        self.nameValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Имя (30 символов)', halign='center',font_size=20)
         self.roleValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Роль', halign='center', font_size=20)
-        self.mailValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Почта', halign='center', font_size=20)
+        self.mailValue = TextInput(multiline=False, size_hint=(1, .5), hint_text='Почта в домене @mirea.ru', halign='center', font_size=20)
         layout.add_widget(Label(text="Введите логин пользователя",line_height=1))
         layout.add_widget(Label(text="Введите Фамилию",line_height=1))
         layout.add_widget(Label(text="Введите Отчество",line_height=1))
@@ -38,13 +38,13 @@ class UsersScreen(Screen):
         layout.add_widget(self.roleValue)
         layout.add_widget(self.SPasswordValue)
         layout.add_widget(self.mailValue)
-        layout.add_widget(Button(text="Добавить Пользователя", size_hint=[1, 0.1], on_press=self.BUTTON_AddUser))
+        layout.add_widget(Button(text="Добавить Пользователя", size_hint=[1, 0.1], on_press=self.BUTTON_AddUser,background_color=[0, 1.5, 3, 1]))
         layout.add_widget(Label(text=""))
         layout.add_widget(Label(text=""))
 
         layout.add_widget(Label(text=""))
         layout.add_widget(Label(text=""))
-        layout.add_widget(Button(text="Назад",size_hint=[1, 0.1],on_press=self. BUTTON_return))
+        layout.add_widget(Button(text="Назад",size_hint=[1, 0.1],on_press=self. BUTTON_return,background_color=[0, 1.5, 3, 1]))
         self.add_widget(layout)
 
         bottommenu = BoxLayout(orientation='horizontal', size_hint=(1, .15))
@@ -73,6 +73,7 @@ class UsersScreen(Screen):
         popup.open()
 
     def BUTTON_return(self, *args):
+        self.SPasswordValue.text = ""
         self.manager.transition.direction = 'right'
         self.manager.current = 'adminscreen'
 

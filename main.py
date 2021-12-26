@@ -29,9 +29,9 @@ class ScreenMain(Screen):
 
         gridlayout = GridLayout(cols=3, row_force_default=True, row_default_height=40, col_default_width = 200)
         login_label = Label(text="Введите Логин", font_size=20)
-        self.login_value = TextInput(multiline=False, size_hint=(.5, .25),halign = 'center', font_size = 20, hint_text = 'Логин')
+        self.login_value = TextInput(multiline=False, size_hint=(.5, .25),halign = 'center', font_size = 20, hint_text = 'Логин (4-20 символов)')
         password_label = Label(text="Введите Пароль", font_size=20)
-        self.password_value = TextInput(multiline=False, size_hint=(.5, .25), password=True,halign = 'center',font_size = 20, hint_text = 'Пароль')
+        self.password_value = TextInput(multiline=False, size_hint=(.5, .25), password=True,halign = 'center',font_size = 20, hint_text = 'Пароль (8-20 символов)')
 
         nullabel1 = Label(text="", font_size=20)
         nullabel2 = Label(text="", font_size=20)

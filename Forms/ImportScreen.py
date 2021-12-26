@@ -21,25 +21,28 @@ class ImportScreen(Screen):
         returnButton = Button(
             text="Переход в меню",
             size_hint=[1, 0.1],
-            on_press=self.BUTTON_return
+            on_press=self.BUTTON_return,
+            background_color=[0, 1.5, 3, 1],
         )
         importButton = Button(
             text="Импорт расписания",
             size_hint=[1, 0.1],
-            on_press=self.BUTTON_import
+            on_press=self.BUTTON_import,
+            background_color=[0, 1.5, 3, 1],
         )
         importRoomsButton = Button(
             text="Импорт аудиторий",
             size_hint=[1, 0.1],
-            on_press=self.BUTTON_importRooms
+            on_press=self.BUTTON_importRooms,
+            background_color=[0, 1.5, 3, 1],
         )
         self.saveButton = Button(
             text="Сохранить файл",
-            size_hint=[1, 0.1], disabled=True, on_press = self.BUTTON_save)
+            size_hint=[1, 0.1], disabled=True, on_press = self.BUTTON_save, background_color=[0, 1.5, 3, 1])
 
         self.clearButton = Button(
             text="Очистить путь",
-            size_hint=[1, 0.1],disabled=True, on_press = self.BUTTON_clear)
+            size_hint=[1, 0.1],disabled=True, on_press = self.BUTTON_clear, background_color=[0, 1.5, 3, 1])
 
         self.label = Label(text = "Расписание еще не загружено, Вы можете стать первым!",line_height = 4)
         layout.add_widget(importButton)

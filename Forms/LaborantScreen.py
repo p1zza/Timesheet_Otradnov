@@ -13,9 +13,9 @@ class LaborantScreen(Screen):
 
         gridlayout = GridLayout(cols=3, row_force_default=True, row_default_height=40, col_default_width = 200)
         gridlayout.add_widget(Label(text="Рабочее место лаборанта",size_hint=[1, 0.1]))
-        gridlayout.add_widget((Button(text='Заявка на изменение расписания',on_click= self.BUTTON_Message)))
-        gridlayout.add_widget((Button(text='Перенести пару', on_click= self.BUTTON_Message)))
-        gridlayout.add_widget((Button(text='Заменить преподавателя', on_click= self.BUTTON_Message)))
+        gridlayout.add_widget((Button(text='Заявка на изменение расписания',on_click= self.BUTTON_Message, background_color=[0, 0, 1, 0])))
+        gridlayout.add_widget((Button(text='Перенести пару', on_click= self.BUTTON_Message, background_color=[0, 0, 1, 0])))
+        gridlayout.add_widget((Button(text='Заменить преподавателя', on_click= self.BUTTON_Message, background_color=[0, 0, 1, 0])))
         self.add_widget(gridlayout)
 
         bottommenu = BoxLayout(orientation = 'horizontal',size_hint=(1, .15))
